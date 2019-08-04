@@ -5,9 +5,6 @@ FROM golang:1.12.7-buster as builder
 WORKDIR /root/coupons/
 COPY . .
 
-# Set a location to install dependencies
-ENV GOBIN=/go/bin/
-
 # Build the app for alpine, executable name: coupons
 RUN go get
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o coupons
@@ -21,10 +18,11 @@ WORKDIR /root/
 # Copy the executable from the previous stage
 COPY --from=builder /root/coupons/coupons /root
 
-# Run on port 4000
-ENV PORT=4000
+# Run on port provided through an argument
+ARG PORT
+ENV PORT=$PORT
 
 # Run the app when the container starts
 ENTRYPOINT /root/coupons
 
-EXPOSE 4000
+EXPOSE $PORT

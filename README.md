@@ -1,5 +1,11 @@
 # Coupons service
 
+## Summary
+
+This is a coupon service, allowing users to create, update and list coupons
+via a REST API.  
+Filters allow to retrieve the coupons in different ways.
+
 ## Running the project
 
 Requirements:
@@ -48,6 +54,12 @@ export DATABASE_DATABASE=[database]
 go run migration/migrate.go migration/creation.sql migration/seed.sql
 
 ./coupons
+```
+
+## Testing
+
+```sh
+./test.sh # needs port 5432 available, otherwise please update test.sh
 ```
 
 ## Filtering

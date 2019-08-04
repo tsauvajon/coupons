@@ -5,14 +5,14 @@ services:
       context: .
     restart: always
     environment:
-      - PORT=4000
+      - PORT=80
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
       - DATABASE_USERNAME=perkbox
       - DATABASE_PASSWORD=perkbox
       - DATABASE_DATABASE=coupons
     ports:
-      - "4000:4000"
+      - "4000:80"
     depends_on:
       - db
   migrate:
@@ -32,7 +32,7 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=perkbox
-      - POSTGRES_DB=perkbox
+      - POSTGRES_PASSWORD=perkbox
       - POSTGRES_DB=coupons
   pgadmin:
     image: dpage/pgadmin4:4.11
