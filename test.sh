@@ -30,17 +30,20 @@ docker run \
 echo "Waiting for the container to start"
 sleep 5
 
-echo "Creating the db structure"
-go run ./migration/migrate.go ./migration/creation.sql  2>/dev/null
+# Creating the db structure with every test to avoid race conditions between tests
+echo "Testing: database client"
+go run ./migration/migrate.go ./migration/creation.sql 2>/dev/null
+go test ./coupon
+echo
+
+echo "Testing: coupon client"
+go run ./migration/migrate.go ./migration/creation.sql 2>/dev/null
+go test ./coupon
 echo
 
 echo "Testing: server"
+go run ./migration/migrate.go ./migration/creation.sql  2>/dev/null
 go test .
-echo
-
-echo "Testing: client"
-go run ./migration/migrate.go ./migration/creation.sql 2>/dev/null
-go test ./coupon
 echo
 
 echo "Cleaning up"
