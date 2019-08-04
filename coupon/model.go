@@ -28,13 +28,3 @@ type Brand struct {
 	ID   int64 `json:"-"`
 	Name string
 }
-
-// Query is a query to list coupons, all fields will be applied as filters
-type Query struct {
-	// 1 <= Take <= 20
-	Take, Skip int64
-	BrandName  string
-	// Min <= Max, 0 = disabled
-	MinValue, MaxValue float64
-	ExpiresAfter       time.Time
-}

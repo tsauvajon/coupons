@@ -39,6 +39,20 @@ func respondWithError(w http.ResponseWriter, code int, message string) {
 	respondWithJSON(w, code, map[string]string{"error": message})
 }
 
+func respond(w http.ResponseWriter, payload interface{}, err error) {
+	if err != nil {
+		switch err.(type) {
+		case *coupon.ErrBadRequest:
+			respondWithError(w, http.StatusBadRequest, err.Error())
+		default:
+			respondWithError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, payload)
+}
+
 func (s *server) CouponsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -52,9 +66,10 @@ func (s *server) CouponsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Parses GET queries, formats responses
 func (s *server) GetCoupons(w http.ResponseWriter, r *http.Request) {
 	values := r.URL.Query()
-	q := &coupon.Query{
+	q := &coupon.FilterQuery{
 		BrandName: values.Get("brand"),
 	}
 
@@ -112,25 +127,33 @@ func (s *server) GetCoupons(w http.ResponseWriter, r *http.Request) {
 
 	coupons, err := s.client.ListCoupons(context.Background(), q)
 
-	if err != nil {
-		switch err.(type) {
-		case *coupon.ErrBadRequest:
-			respondWithError(w, http.StatusBadRequest, err.Error())
-		default:
-			respondWithError(w, http.StatusInternalServerError, err.Error())
-		}
-		return
-	}
-
-	respondWithJSON(w, http.StatusOK, coupons)
+	respond(w, coupons, err)
 }
 
 func (s *server) CreateCoupon(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("create coupons"))
-	w.WriteHeader(200)
+	decoder := json.NewDecoder(r.Body)
+	var q *coupon.SaveQuery
+	if err := decoder.Decode(&q); err != nil {
+		err = fmt.Errorf("couldn't parse the body: %s", err)
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	coupon, err := s.client.CreateCoupon(context.Background(), q)
+
+	respond(w, coupon, err)
 }
 
 func (s *server) UpdateCoupon(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("update coupon"))
-	w.WriteHeader(200)
+	decoder := json.NewDecoder(r.Body)
+	var q *coupon.SaveQuery
+	if err := decoder.Decode(&q); err != nil {
+		err = fmt.Errorf("couldn't parse the body: %s", err)
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	coupon, err := s.client.UpdateCoupon(context.Background(), q)
+
+	respond(w, coupon, err)
 }
