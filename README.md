@@ -2,8 +2,7 @@
 
 ## Running the project
 
-sh
-```
+```sh
 # Start the database
 docker-compose up -d db
 
@@ -20,7 +19,8 @@ docker-compose up -d coupons
 # max: maximum discount (max >= 0, 0 = disabled)
 # brand: brand the coupons can be used with (case insensitive, wildcard)
 # take, skip: pagination (1 <= take <= 20, skip >= 0)
-# exp: expiration date (2019-09-16T11:45:26.371Z format, display only )
+# exp: expiration date (2019-09-16T11:45:26.371Z format, display only coupons
+available after this date)
 # 
 # Omit any filter you don't want to apply
 
