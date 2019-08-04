@@ -1,5 +1,5 @@
 INSERT INTO brands(name)
-vALUES  ('Tesco'),
+VALUES  ('Tesco'),
         ('Morrisons'),
         ('Sainsbury'),
         ('ALDI'),

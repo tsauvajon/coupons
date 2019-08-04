@@ -1,4 +1,4 @@
-package main
+package coupon
 
 import "time"
 
@@ -25,14 +25,16 @@ type Coupon struct {
 
 // Brand is a shop where you can use coupons
 type Brand struct {
-	ID   int64
+	ID   int64 `json:"-"`
 	Name string
 }
 
-// CouponQuery is a query to list coupons, all fields will be applied as filters
-type CouponQuery struct {
-	Take, Skip         int64
-	BrandName          string
+// Query is a query to list coupons, all fields will be applied as filters
+type Query struct {
+	// 1 <= Take <= 20
+	Take, Skip int64
+	BrandName  string
+	// Min <= Max, 0 = disabled
 	MinValue, MaxValue float64
 	ExpiresAfter       time.Time
 }

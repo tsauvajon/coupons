@@ -17,7 +17,7 @@ type Client struct {
 	Connection *sql.DB
 }
 
-// NewClient : Reads the environment variables to return a SQL client
+// NewClient : Reads config from the environment and returns a new client
 func NewClient() (*Client, error) {
 	host := os.Getenv("DATABASE_HOST")
 	port := os.Getenv("DATABASE_PORT")
