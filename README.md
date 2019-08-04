@@ -10,26 +10,29 @@ Filters allow to retrieve the coupons in different ways.
 
 Requirements:
 ```sh
-docker --version # Docker version 19.03.1-ce, build 74b1e89e8a
+docker --version # Docker version 19.03.1-ce
+docker-compose --version # docker-compose version 1.24.1
 ```
 
+Run the service:
 ```sh
-# Start the database
-docker-compose up -d db
-
-# Create the database schema, insert some data
-docker-compose up migrate
-
-# Run the server
-docker-compose up -d coupons
-
-# You can watch the logs in another terminal if you want:
-docker logs -f coupons_coupons_1
+docker-compose up -d
 ```
 
 Ready to go! You can start using the service:
 ```sh
 curl '127.0.0.1:4000/coupons' | python -mjson.tool
+```
+
+You can watch the logs in another terminal if you want:
+```sh
+docker logs -f coupons_coupons_1
+```
+
+## Testing
+
+```sh
+./test.sh # needs port 5432 available, otherwise open test.sh
 ```
 
 ## Building manually
@@ -54,12 +57,6 @@ export DATABASE_DATABASE=[database]
 go run migration/migrate.go migration/creation.sql migration/seed.sql
 
 ./coupons
-```
-
-## Testing
-
-```sh
-./test.sh # needs port 5432 available, otherwise please update test.sh
 ```
 
 ## Filtering

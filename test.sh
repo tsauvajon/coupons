@@ -1,3 +1,8 @@
+# For simplicity for users just cloning and running this package, I stored the
+# configuration in this file rather than using environment variables.
+
+# If you need to run the test database on another port, update the value here.
+
 export DATABASE_HOST=127.0.0.1
 export DATABASE_PORT=5432
 export DATABASE_USERNAME=perkbox
@@ -21,7 +26,7 @@ fi
 
 docker run \
     --rm --name dbtest \
-    -d -p 5432:5432 \
+    -d -p $DATABASE_PORT:5432 \
     -e POSTGRES_DB \
     -e POSTGRES_USER \
     -e POSTGRES_PASSWORD \
