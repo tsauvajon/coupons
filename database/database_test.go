@@ -17,7 +17,7 @@ func TestDb(t *testing.T) {
 
 	var id int
 	if err = c.Connection.QueryRow(
-		`INSERT INTO brands(name) VALUES ("sainsbury's") returning id`,
+		`INSERT INTO brands(name) VALUES ('sainsbury''s') returning id`,
 	).Scan(&id); err != nil {
 		t.Errorf("couldn't insert data: %s", err)
 		return
