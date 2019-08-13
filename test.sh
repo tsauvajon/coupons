@@ -19,7 +19,8 @@ go build
 
 echo "Running the db"
 
-# If the image is present don't write anything to the console
+# If the image is already present don't try to pull it, to avoid
+# writing anything to the console
 if [[ -z "$(docker images -q postgres:12-alpine 2> /dev/null)" ]]; then
     docker pull postgres:12-alpine
 fi
@@ -38,7 +39,7 @@ sleep 5
 # Creating the db structure with every test to avoid race conditions between tests
 echo "Testing: database client"
 go run ./migration/migrate.go ./migration/creation.sql 2>/dev/null
-go test ./coupon
+go test ./database
 echo
 
 echo "Testing: coupon client"

@@ -44,7 +44,7 @@ func TestClient(t *testing.T) {
 	}
 
 	if coupon.ExpiryUTC != q.ExpiryUTC {
-		t.Errorf("brand doesn't match: %s | %s", coupon.ExpiryUTC, q.ExpiryUTC)
+		t.Errorf("expiry date doesn't match: %s | %s", coupon.ExpiryUTC, q.ExpiryUTC)
 		return
 	}
 
@@ -117,7 +117,7 @@ func TestClient(t *testing.T) {
 	// up to the second... it should be enough for this use case
 	expected, actual := coupon.ExpiryUTC.Format("01-02-2006 15:04:05"), cp.ExpiryUTC.Format("01-02-2006 15:04:05")
 	if expected != actual {
-		t.Errorf("brand doesn't match: %s | %s", expected, actual)
+		t.Errorf("expiry date doesn't match: %s | %s", expected, actual)
 		return
 	}
 
